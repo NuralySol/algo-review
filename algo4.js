@@ -221,18 +221,84 @@ const containerWithTheMostWater = (arr) => {
 
 console.log(containerWithTheMostWater(wells))
 
-
+// TODO:
 // three sum:
 // Input: [-1, 0, 1, 2, -1, -4]  
 // Output: [[-1, -1, 2], [-1, 0, 1]]
 
+nums = [-1, 0, 1, 2, -1, -4];
+
+const getThreeSum = (arr) => {
+    if (!Array.isArray(arr) || arr.length < 3 || !arr.every(item => typeof item === 'number')) return arr;
+    // sort the array in place:
+    arr.sort((a, b) => a - b);
+
+    // an empty array to hold the result array to make sure:
+    const result = [];
+
+    // loop 1:
+    for (let i = 0; i < arr.length - 2; i++) {
+        console.log(arr[i]);
+        if (i > 0 && arr[i] == arr[i - 1]) {
+            // skip the duplicates for i:
+            continue 
+        }
+        let left = i + 1;
+        let right = arr.length - 1;
+
+        while (left < right) {
+            let total = arr[i] + arr[left] + arr[right];
+
+            if (total === 0) {
+                result.push([arr[i], arr[left], arr[right]]);
+                while (left < right && arr[left] === arr[left + 1]) left++;
+                while (left < right && arr[right] === arr[right - 1]) right--;
+                left++;
+                right--;
+            } else if (total < 0) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+    return result;
+}
+
+console.log(getThreeSum(nums))
 
 // trapping Rain water:
 // Input: [0,1,0,2,1,0,1,3,2,1,2,1]  
 // Output: 6
 
-// min window subsequence:
-// Input: S = "abcdebdde", T = "bde"  
-// Output: "bcde"
+const height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1];
 
-// 11. Merge Intervals In-Place
+const trappingRainWater = (arr) => {
+    if (!Array.isArray(arr) || arr.length <= 1 || !arr.every(item => typeof item === "number")) return arr;
+    
+    let left = 0;
+    let right = arr.length - 1;
+    let leftMax = 0;
+    let rightMax = 0;
+    let water = 0;
+
+    while (left < right) {
+        if (arr[left] < arr[right]) {
+            if (arr[left] >= leftMax) {
+                leftMax = arr[left];
+            } else {
+                water += leftMax - arr[left];
+            } left++;
+        } else {
+            if (arr[right] >= rightMax) {
+                rightMax = arr[right]
+            } else {
+                water += rightMax - arr[right]
+            } right--;
+        }
+    }
+    return water;
+}
+
+console.log(trappingRainWater(height));
+
